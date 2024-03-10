@@ -63,13 +63,11 @@
                         <option value="{{ Auth::user()->email }}" selected>ME</option>
                         @if(isset($mail))
                             @foreach ($users as $user)
-                                @foreach ($mail->send_to as $to)
-                                    @if ($user->email==$to)
-                                        <option value="{{$user->email}}" selected>{{ $user->name }}</option>
-                                    @else
-                                        <option value="{{$user->email}}">{{ $user->name }}</option>
-                                    @endif
-                                @endforeach
+                            <option value="{{$user->email}}"
+                                @if (in_array($user->email,$mail->send_to))
+                                selected
+                                @endif
+                                >{{ $user->name }}</option>
                             @endforeach
                         @else
                             @foreach ($users as $user)
@@ -90,13 +88,12 @@
                     <select name="send_cc[]" class="form-select w-100" id="cc" aria-label="CC"  multiple="multiple" >
                         @if(isset($mail)&& $mail->send_cc!=null)
                             @foreach ($users as $user)
-                                @foreach ($mail->send_cc as $cc )
-                                    @if ($user->email==$cc)
-                                        <option value="{{$user->email}}" selected>{{ $user->name }}</option>
-                                    @else
-                                        <option value="{{$user->email}}">{{ $user->name }}</option>
+                            <option value="{{$user->email}}"
+                                @if (in_array($user->email,$mail->send_cc))
+                                    selected
                                     @endif
-                                @endforeach
+                                    >{{ $user->name }}</option>
+
                             @endforeach
                         @else
                             @foreach ($users as $user)
@@ -116,13 +113,11 @@
                         <option>Select BCC</option>
                         @if(isset($mail) && $check!=1 && $mail->send_bcc!=null)
                         @foreach ($users as $user)
-                        @foreach ($mail->send_bcc as $bcc)
-                        @if ($user->email==$bcc)
-                        <option value="{{$user->email}}" selected>{{ $user->name }}</option>
-                        @else
-                        <option value="{{$user->email}}">{{ $user->name }}</option>
+                        <option value="{{$user->email}}"
+                        @if (in_array($user->email,$mail->send_bcc))
+                             selected
                         @endif
-                        @endforeach
+                        >{{ $user->name }}</option>
                         @endforeach
                         @else
                         @foreach ($users as $user)
@@ -132,11 +127,11 @@
                     </select>
                     {{-- select all --}}
                     <div class=" form-check">
+                        <input name="send_all" type="checkbox" class="form-check-input" id="bccCheckbox"
                         @if(isset($check) && $check==1)
-                        <input name="send_all" type="checkbox" class="form-check-input" id="bccCheckbox" checked value="true">
-                        @else
-                        <input name="send_all" type="checkbox" class="form-check-input" id="bccCheckbox">
+                         checked value="true"
                         @endif
+                         >{{-- close chechbox tage  --}}
                         <label class="form-check-label" id="messageSelect" for="bccCheckbox">Select All</label>
                         <label class="form-check-label text-success" id="messageSelectAll" style="display: none;">Select All of BCC</label>
                     </div>
